@@ -1,109 +1,128 @@
-# Augment续杯 浏览器插件
+# Augment Refill Chrome Extension
 
-这是一个Chrome浏览器扩展，用于在Augment登录页面添加"续杯"功能。
+This is a Chrome browser extension that adds a "Refill" feature to the Augment login page.
 
-> **重要提示：** 使用前请在扩展设置中输入您自己的域名邮箱后缀（如 example.com），扩展不再提供默认域名。未设置域名将无法使用续杯功能！
+> **Important Note:** Before using, please enter your own domain email suffix (e.g., example.com) in the extension settings. The extension no longer provides a default domain. The refill feature will not work if the domain is not set!
 
-## 功能
+## Features
 
-- 在Augment登录页面添加"续杯"按钮
-- 点击按钮后自动生成随机邮箱地址
-- 自动填入登录表单并点击继续按钮
-- 支持自定义邮箱后缀
-- 支持自定义随机字符串位数（默认为12位）
+- Adds a "Refill" button to the Augment login page
+- Automatically generates a random email address when the button is clicked
+- Automatically fills in the login form and clicks the continue button
+- Supports custom email suffixes
+- Supports custom random string length (default is 12 characters)
 
-## 开发指南
+## Development Guide
 
-### 环境要求
+### Requirements
 
-- Node.js (推荐 v14 或更高版本)
-- npm (推荐 v6 或更高版本)
+- Node.js (recommended v14 or higher)
+- npm (recommended v6 or higher)
 
-### 安装依赖
+### Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 构建扩展
+### Build the Extension
 
 ```bash
 npm run build
 ```
 
-构建完成后，将在 `dist` 目录中生成一个 ZIP 文件，可以直接分享给其他人使用。
+After building, a ZIP file will be generated in the `dist` directory, which can be shared directly with others.
 
-## 安装方法
+## Installation
 
-### 开发版本
+### Development Version
 
-1. 克隆此仓库
-2. 安装依赖: `npm install`
-3. 构建扩展: `npm run build`
-4. 打开Chrome浏览器，进入扩展管理页面 (chrome://extensions/)
-5. 开启"开发者模式"
-6. 点击"加载已解压的扩展程序"
-7. 选择 `dist/build` 目录
+1. Clone this repository
+2. Install dependencies: `npm install`
+3. Build the extension: `npm run build`
+4. Open Chrome and go to the extensions page (chrome://extensions/)
+5. Enable "Developer mode"
+6. Click "Load unpacked"
+7. Select the `dist/build` directory
 
-### 用户版本
+### User Version
 
-1. 下载最新的 ZIP 文件
-2. 解压 ZIP 文件
-3. 打开Chrome浏览器，进入扩展管理页面 (chrome://extensions/)
-4. 开启"开发者模式"
-5. 点击"加载已解压的扩展程序"
-6. 选择解压后的文件夹
+1. Download the latest ZIP file
+2. Unzip the ZIP file
+3. Open Chrome and go to the extensions page (chrome://extensions/)
+4. Enable "Developer mode"
+5. Click "Load unpacked"
+6. Select the unzipped folder
 
-## 使用方法
+## Usage
 
-1. 安装扩展后，点击扩展图标，**必须设置您自己的邮箱后缀**（如 example.com）和随机字符串位数（默认为12位）
-2. 访问 [Augment登录页面](https://login.augmentcode.com/)
-3. 在登录页面上，您将看到原始"Continue"按钮下方出现一个"续杯"按钮
-4. 点击"续杯"按钮，它将自动生成随机邮箱并填入表单，然后自动点击继续按钮
+1. After installing the extension, click the extension icon and **set your own email suffix** (e.g., example.com) and the random string length (default is 12)
+2. Visit the [Augment login page](https://login.augmentcode.com/)
+3. On the login page, you will see a "Refill" button appear below the original "Continue" button
+4. Click the "Refill" button; it will automatically generate a random email, fill in the form, and click the continue button
 
-> **注意：** 如果您没有设置邮箱后缀，点击"续杯"按钮时会收到提示，无法继续操作。
+> **Note:** If you have not set an email suffix, you will receive a prompt when clicking the "Refill" button and will not be able to proceed.
 
-## 无限续杯原理说明
+## How the Unlimited Refill Works
 
-Augment续杯插件利用了Augment登录系统的特性，通过自动生成随机邮箱地址来实现"无限续杯"功能。以下是其工作原理：
+The Augment Refill extension leverages the characteristics of the Augment login system to achieve "unlimited refills" by automatically generating random email addresses. Here's how it works:
 
-### 基本原理
+### Basic Principle
 
-1. **随机邮箱生成**：插件会根据用户设置的位数（默认12位）生成随机字符串，并与用户提供的域名后缀组合，形成一个全新的邮箱地址。
+1. **Random Email Generation:** The extension generates a random string of the user-specified length (default 12 characters) and combines it with the user-provided domain suffix to form a new email address.
+2. **Auto-Fill:** The generated random email is automatically filled into the email input box on the Augment login page.
+3. **Auto-Submit:** The extension automatically clicks the "Continue" button on the page to submit the newly generated email.
+4. **Bypass Verification:** Since the Augment login system does not immediately verify the authenticity of the email, as long as the email format is correct, the system will accept it and create a new session.
 
-2. **自动填充**：生成的随机邮箱会自动填入Augment登录页面的邮箱输入框中。
+### Technical Implementation
 
-3. **自动提交**：插件会自动点击页面上的"Continue"按钮，提交这个新生成的邮箱。
+- **Domain Control:** Users need to use a domain they control as the email suffix. This way, even if the Augment system sends a verification email, it will not affect actual use.
+- **Ensuring Randomness:** By generating a sufficiently long random string (default 12 characters), each generated email address is unique, avoiding conflicts with already registered accounts.
+- **DOM Manipulation:** The extension uses JavaScript to manipulate page DOM elements, enabling automatic filling and clicking without manual user intervention.
 
-4. **绕过验证**：由于Augment登录系统不会立即验证邮箱的真实性，只要邮箱格式正确，系统就会接受并创建一个新的会话。
+### Usage Recommendations
 
-### 技术实现
+- It is recommended to use a domain you actually own so you have full control over email addresses under that domain.
+- Adjust the random string length as needed to ensure uniqueness without making it excessively long.
+- Please use this feature responsibly and comply with relevant terms of service and laws.
 
-- **域名控制**：用户需要使用自己控制的域名作为邮箱后缀，这样即使Augment系统发送验证邮件，也不会对实际使用造成影响。
-
-- **随机性保证**：通过生成足够长度的随机字符串（默认12位），确保每次生成的邮箱地址都是唯一的，避免与已注册账户冲突。
-
-- **DOM操作**：插件通过JavaScript操作页面DOM元素，实现自动填充和点击功能，无需用户手动操作。
-
-### 使用建议
-
-- 建议使用自己真实拥有的域名，这样可以完全控制该域名下的邮箱。
-- 适当调整随机字符串位数，既保证唯一性，又不至于过长。
-- 请合理使用此功能，遵守相关服务条款和法律法规。
-
-## 项目结构
+## Project Structure
 
 ```
 augment-refill/
-├── dist/               # 构建输出目录
-├── scripts/            # 构建脚本
-├── src/                # 源代码
-│   ├── background.js   # 后台脚本
-│   ├── content.js      # 内容脚本
-│   ├── icon.ico        # 扩展图标
-│   ├── manifest.json   # 扩展配置
-│   ├── popup.html      # 弹出窗口HTML
-│   └── popup.js        # 弹出窗口脚本
-├── package.json        # 项目配置
-└── README.md           # 项目说明
+├── dist/               # Build output directory
+├── scripts/            # Build scripts
+├── src/                # Source code
+│   ├── background.js   # Background script
+│   ├── content.js      # Content script
+│   ├── icon.ico        # Extension icon
+│   ├── manifest.json   # Extension manifest
+│   ├── popup.html      # Popup window HTML
+│   └── popup.js        # Popup window script
+├── package.json        # Project configuration
+└── README.md           # Project documentation
 ```
+
+## Clearing Augment Code Cache
+
+If you want to fully log out of Augment Code or remove all cached account information from your system, you can use the provided `clear-augment-cache.sh` script.
+
+### What does it do?
+
+- Detects your operating system (macOS, Linux, or Windows).
+- Locates your VS Code user data directory.
+- Removes all Augment Code global storage and cached data from VS Code.
+- Attempts to remove Augment-related files from workspace storage.
+- Provides instructions for clearing browser storage in VS Code for a complete clean.
+
+### How to use
+
+1. **Close VS Code** before running the script for best results.
+2. Open a terminal and navigate to the directory containing `clear-augment-cache.sh`.
+3. Run the script:
+   ```bash
+   bash clear-augment-cache.sh
+   ```
+4. Follow any on-screen instructions. The script will guide you through the process and notify you of any remaining manual steps (such as clearing browser storage via VS Code's Developer Tools).
+
+> **Note:** This script is safe to use, but it will remove all Augment Code account data from your VS Code environment. You will need to log in again the next time you use Augment Code.
